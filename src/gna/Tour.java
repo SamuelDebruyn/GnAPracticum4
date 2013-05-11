@@ -53,7 +53,7 @@ public abstract class Tour {
 	}
 	
 	protected int previousIndex(int index){
-		if(index == 0)
+		if(index == 0 || index > this.getVisitSequence().size())
 			return this.getVisitSequence().size() - 1;
 		return index - 1;
 	}

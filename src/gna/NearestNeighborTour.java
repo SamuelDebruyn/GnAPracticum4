@@ -21,7 +21,9 @@ public class NearestNeighborTour extends IncrementallyConstructedTour {
 		double bestDistance = this.getVisitSequence().get(0).distanceTo(point);
 		
 		for(int i = 0; i < this.getVisitSequence().size(); i++){
+			
 			double currentDistance = this.getVisitSequence().get(i).distanceTo(point);
+			
 			if(currentDistance < bestDistance){
 				bestIndex = i;
 				bestDistance = currentDistance;

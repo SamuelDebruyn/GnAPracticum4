@@ -4,6 +4,7 @@ package gna;
  * A tour constructed using the smallest increase heuristic.
  */
 public class SmallestIncreaseTour extends IncrementallyConstructedTour {
+	//TODO: bug: niet de beste route
 
 	public SmallestIncreaseTour(World world) {
 		super(world);
@@ -22,8 +23,10 @@ public class SmallestIncreaseTour extends IncrementallyConstructedTour {
 		int bestIndex = 0;
 		double bestTotalDistance = this.newPossibleTotalDistance(0, point, currentTotalDistance);
 		
-		for(int i = 0; i < this.getVisitSequence().size(); i++){
+		for(int i = 0; i <= this.getVisitSequence().size(); i++){
+			
 			double currentPossibleTotalDistance = this.newPossibleTotalDistance(i, point, currentTotalDistance);
+			
 			if(currentPossibleTotalDistance < bestTotalDistance){
 				bestIndex = i;
 				bestTotalDistance = currentPossibleTotalDistance;
