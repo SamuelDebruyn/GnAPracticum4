@@ -42,7 +42,6 @@ public abstract class IncrementallyConstructedTour extends Tour {
 	@Override
 	public double getTotalDistance() {
 		//TODO: vragen of dit toegelaten is
-		//TODO: vragen of de afstand van laatste naar eerste ook moet bijgeteld worden (ook bij 2 punten?)
 		
 		double totalDistance = 0;
 		
@@ -60,6 +59,9 @@ public abstract class IncrementallyConstructedTour extends Tour {
 			previous = current;
 			
 		}
+		
+		if(this.getVisitSequence().size() > 1)
+			totalDistance += this.getVisitSequence().get(0).distanceTo(this.getVisitSequence().get(this.getVisitSequence().size() - 1));
 		
 		return totalDistance;
 
