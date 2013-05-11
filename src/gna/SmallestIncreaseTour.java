@@ -30,13 +30,16 @@ public class SmallestIncreaseTour extends IncrementallyConstructedTour {
 			}
 		}
 		
-		this.addToTour(bestIndex + 1, point);
+		this.addToTour(bestIndex, point);
 		
 	}
 	
 	private double newPossibleTotalDistance(int index, Point point, double cachedTotalDistance){
-		//TODO
-		return 0;
+		int previousIndex = this.previousIndex(index);
+		int nextIndex = this.nextIndex(index);
+		double distanceToPrevious = this.getVisitSequence().get(previousIndex).distanceTo(point);
+		double distanceToNext = this.getVisitSequence().get(nextIndex).distanceTo(point);
+		return cachedTotalDistance + distanceToPrevious + distanceToNext;
 	}
 	
 	private int previousIndex(int index){
