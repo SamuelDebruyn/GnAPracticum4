@@ -58,10 +58,4 @@ public abstract class Tour {
 		return index - 1;
 	}
 	
-	protected int nextIndex(int index){
-		if(index == this.getVisitSequence().size() - 1)
-			return 0;
-		return index + 1;
-	}
-	
 }
