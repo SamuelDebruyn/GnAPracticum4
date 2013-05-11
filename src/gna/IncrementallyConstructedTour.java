@@ -66,5 +66,15 @@ public abstract class IncrementallyConstructedTour extends Tour {
 		return totalDistance;
 
 	}
+	
+	protected double newPossibleTotalDistance(int index, Point point, double cachedTotalDistance){
+		int previousIndex = this.previousIndex(index);
+		int nextIndex = this.nextIndex(index);
+		
+		double distanceToPrevious = this.getVisitSequence().get(previousIndex).distanceTo(point);
+		double distanceToNext = this.getVisitSequence().get(nextIndex).distanceTo(point);
+		
+		return cachedTotalDistance + distanceToPrevious + distanceToNext;
+	}
 
 }
