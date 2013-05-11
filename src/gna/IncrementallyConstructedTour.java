@@ -25,8 +25,8 @@ public abstract class IncrementallyConstructedTour extends Tour {
 
 	protected abstract void insert(Point point);
 	
-	protected void addToTour(Point p){
-		this.getVisitSequence().add(p);				
+	protected void addToTour(int index, Point p){
+		this.getVisitSequence().add(index, p);				
 	}
 	
 	@Override
