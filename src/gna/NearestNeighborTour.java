@@ -1,7 +1,5 @@
 package gna;
 
-import java.util.TreeMap;
-
 /**
  * A tour constructed using the nearest neighbor heuristic.
  */
@@ -14,14 +12,23 @@ public class NearestNeighborTour extends IncrementallyConstructedTour {
 	@Override
 	public void insert(Point point) {
 		
-		TreeMap<Integer, Double> indexesWithDistance = new TreeMap<Integer, Double>();
-		//TODO: comparator by value
-		
-		for(int i = 0; i < this.getVisitSequence().size(); i++){
-			indexesWithDistance.put(new Integer(i), new Double(this.getVisitSequence().get(i).distanceTo(point)));
+		if(this.getVisitSequence().size() <= 1){
+			this.addToTour(point);
+			return;
 		}
 		
-		this.addToTour(indexesWithDistance.firstKey().intValue(), point);
+		int bestIndex = 0;
+		double bestDistance = this.getVisitSequence().get(0).distanceTo(point);
+		
+		for(int i = 0; i < this.getVisitSequence().size(); i++){
+			double currentDistance = this.getVisitSequence().get(i).distanceTo(point);
+			if(currentDistance < bestDistance){
+				bestIndex = i;
+				bestDistance = currentDistance;
+			}
+		}
+		
+		this.addToTour(bestIndex + 1, point);
 		
 	}
 
