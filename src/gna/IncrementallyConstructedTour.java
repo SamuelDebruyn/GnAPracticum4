@@ -1,9 +1,5 @@
 package gna;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 /**
  * Tours that are constructed incrementally by inserting the elements in the
  * given world one by one.
