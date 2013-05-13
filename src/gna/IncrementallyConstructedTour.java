@@ -9,8 +9,6 @@ import java.util.List;
  * given world one by one.
  */
 public abstract class IncrementallyConstructedTour extends Tour {
-	
-	private final ArrayList<Point> currentTour = new ArrayList<Point>();
 
 	public IncrementallyConstructedTour(World world) {
 		super(world);
@@ -31,40 +29,6 @@ public abstract class IncrementallyConstructedTour extends Tour {
 	
 	protected void addToTour(Point p){
 		this.getVisitSequence().add(p);
-	}
-	
-	@Override
-	public List<Point> getVisitSequence() {
-		//TODO: vragen of dit toegelaten is
-		return currentTour;
-	}
-	
-	@Override
-	public double getTotalDistance() {
-		//TODO: vragen of dit toegelaten is
-		
-		double totalDistance = 0;
-		
-		if(this.getVisitSequence().isEmpty())
-			return totalDistance;
-			
-		Iterator<Point> itr = this.getVisitSequence().iterator();
-		
-		Point previous = itr.next();
-		
-		while(itr.hasNext()){
-			
-			Point current = itr.next();
-			totalDistance += previous.distanceTo(current);
-			previous = current;
-			
-		}
-		
-		if(this.getVisitSequence().size() > 1)
-			totalDistance += this.getVisitSequence().get(0).distanceTo(this.getVisitSequence().get(this.getVisitSequence().size() - 1));
-		
-		return totalDistance;
-
 	}
 	
 	protected double newPossibleTotalDistance(int index, Point point, double cachedTotalDistance){
