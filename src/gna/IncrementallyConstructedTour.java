@@ -1,10 +1,16 @@
 package gna;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 /**
  * Tours that are constructed incrementally by inserting the elements in the
  * given world one by one.
  */
 public abstract class IncrementallyConstructedTour extends Tour {
+	
+	private final ArrayList<Point> currentTour = new ArrayList<Point>();
 
 	public IncrementallyConstructedTour(World world) {
 		super(world);
@@ -27,17 +33,38 @@ public abstract class IncrementallyConstructedTour extends Tour {
 		this.getVisitSequence().add(0, p);
 	}
 	
-	protected double newPossibleTotalDistance(int index, Point point, double cachedTotalDistance){
-		int previousIndex = this.previousIndex(index);
+	@Override
+	public double getTotalDistance() {
+
+		double totalDistance = 0;
 		
-		if(index >= this.getVisitSequence().size())
-			index = 0;
-		
-		double distanceToPrevious = this.getVisitSequence().get(previousIndex).distanceTo(point);
-		double distanceToNext = this.getVisitSequence().get(index).distanceTo(point);
-		double distanceRemoved = this.getVisitSequence().get(previousIndex).distanceTo(this.getVisitSequence().get(index));
-		
-		return cachedTotalDistance + distanceToPrevious + distanceToNext - distanceRemoved;
+		if(this.getWorld().getNbPoints() <= 1)
+			return totalDistance;
+
+		if (this.getVisitSequence().isEmpty())
+			return totalDistance;
+
+		Iterator<Point> itr = this.getVisitSequence().iterator();
+
+		Point previous = itr.next();
+
+		while (itr.hasNext()) {
+
+			Point current = itr.next();
+			totalDistance += previous.distanceTo(current);
+			previous = current;
+
+		}
+
+		if (this.getVisitSequence().size() > 1)
+			totalDistance += this.getVisitSequence().get(0).distanceTo(this.getVisitSequence().get(this.getVisitSequence().size() - 1));
+
+		return totalDistance;
+	}
+	
+	@Override
+	public List<Point> getVisitSequence() {
+		return currentTour;
 	}
 
 }

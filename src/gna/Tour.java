@@ -1,7 +1,5 @@
 package gna;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -12,7 +10,6 @@ import java.util.List;
  */
 public abstract class Tour {
 	
-	private final ArrayList<Point> currentTour = new ArrayList<Point>();
 	private final World world;
 
 	public Tour(World world) {
@@ -31,34 +28,7 @@ public abstract class Tour {
 	 * If <code>getWorld().getNbPoints()</code> is less than or equal to one,
 	 * then this method returns 0.
 	 */
-	public double getTotalDistance() {
-		// TODO: vragen of dit toegelaten is
-
-		double totalDistance = 0;
-		
-		if(this.getWorld().getNbPoints() <= 1)
-			return totalDistance;
-
-		if (this.getVisitSequence().isEmpty())
-			return totalDistance;
-
-		Iterator<Point> itr = this.getVisitSequence().iterator();
-
-		Point previous = itr.next();
-
-		while (itr.hasNext()) {
-
-			Point current = itr.next();
-			totalDistance += previous.distanceTo(current);
-			previous = current;
-
-		}
-
-		if (this.getVisitSequence().size() > 1)
-			totalDistance += this.getVisitSequence().get(0).distanceTo(this.getVisitSequence().get(this.getVisitSequence().size() - 1));
-
-		return totalDistance;
-	}
+	public abstract double getTotalDistance();
 
 	/**
 	 * Return the list of points in the order they should be visited.
@@ -66,10 +36,7 @@ public abstract class Tour {
 	 * The result of this method is never <code>null</code>. Each point in
 	 * <code>getWorld().getPoints()</code> appears exactly once in result.
 	 */
-	public List<Point> getVisitSequence() {
-		// TODO: vragen of dit toegelaten is
-		return currentTour;
-	}
+	public abstract List<Point> getVisitSequence();
 
 	@Override
 	public String toString() {
@@ -84,12 +51,6 @@ public abstract class Tour {
 			}
 			return builder.toString();
 		}
-	}
-
-	protected int previousIndex(int index) {
-		if (index == 0 || index > this.getVisitSequence().size())
-			return this.getVisitSequence().size() - 1;
-		return index - 1;
 	}
 
 }
