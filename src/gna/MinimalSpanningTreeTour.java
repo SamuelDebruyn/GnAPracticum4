@@ -1,29 +1,141 @@
 package gna;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.PriorityQueue;
 
 /**
  * A tour constructed using the minimal spanning tree heuristic.
  */
 public class MinimalSpanningTreeTour extends Tour {
 
-	public class MSTEdge {
+	public class MSTEdge implements Comparable<MSTEdge> {
+
 		public final Point p1, p2;
+		private final double weight;
 
 		public MSTEdge(Point p1, Point p2) {
 			this.p1 = p1;
 			this.p2 = p2;
+			this.weight = p1.distanceTo(p2);
+		}
+
+		public double getWeight() {
+			return weight;
+		}
+
+		@Override
+		public int compareTo(MSTEdge other) {
+			Double first = Double.valueOf(this.getWeight());
+			Double second = Double.valueOf(other.getWeight());
+			return first.compareTo(second);
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			
+			if(this == obj)
+				return true;
+
+			if(obj == null)
+				return false;
+
+			if(this.getClass() != obj.getClass())
+				return false;
+
+			MSTEdge toCompare = (MSTEdge) obj;
+			
+			if(this.getWeight() != toCompare.getWeight())
+				return false;
+
+			if(this.p1 == toCompare.p1 && this.p2 == toCompare.p2)
+				return true;
+			
+			if(this.p1 == toCompare.p2 && this.p2 == toCompare.p1)
+				return true;
+			
+			return false;
 		}
 	}
 
+	private final Point root;
+	private final ArrayList<MSTEdge> MST = new ArrayList<MSTEdge>();
+
 	public MinimalSpanningTreeTour(World world) {
 		super(world);
-		// compute route here
+		
+		//TODO: allerlei shizzle als er maar 1 punt wordt gegeven
+		//TODO: fout
+
+		if (this.getWorld().getNbPoints() < 1) {
+			this.root = null;
+			return;
+		}
+
+		HashSet<Point> openPoints = new HashSet<Point>();
+		openPoints.addAll(world.getPoints());
+		this.root = world.getPoints().get(0);
+		
+		PriorityQueue<MSTEdge> openEdges = new PriorityQueue<MSTEdge>();
+		for(Point start: world.getPoints()){
+			for(Point end: world.getPoints()){
+				if(!start.equals(end)){
+					openEdges.add(new MSTEdge(start, end));
+				}
+			}
+		}
+		
+		Iterator<MSTEdge> itr = openEdges.iterator();
+		MSTEdge startEdge = null;
+		while(itr.hasNext()){
+			startEdge = itr.next();
+			if(startEdge.p1.equals(this.getMSTRoot())){				
+				break;
+			}else if(startEdge.p2.equals(this.getMSTRoot())){
+				break;
+			}
+		}
+		while(openEdges.remove(startEdge)){
+			//NOP			
+		}
+		this.getMST().add(startEdge);
+		
+		HashSet<Point> closedPoints = new HashSet<Point>();
+		closedPoints.add(startEdge.p1);
+		closedPoints.add(startEdge.p2);
+		openPoints.remove(startEdge.p1);
+		openPoints.remove(startEdge.p2);
+		
+		while(!openPoints.isEmpty()){
+			
+			Iterator<MSTEdge> edgeItr = openEdges.iterator();
+			MSTEdge found = null;
+			while(edgeItr.hasNext()){
+				found = edgeItr.next();
+				if(!(closedPoints.contains(found.p1) || closedPoints.contains(found.p2))){
+					continue;
+				}else if(closedPoints.contains(found.p1) && closedPoints.contains(found.p2)){
+					continue;
+				}else{
+					this.getMST().add(found);
+					closedPoints.add(found.p1);
+					closedPoints.add(found.p2);
+					openPoints.remove(found.p1);
+					openPoints.remove(found.p2);
+					break;
+				}
+			}
+						
+		}
+		
 	}
 
 	@Override
 	public double getTotalDistance() {
-		throw new RuntimeException("not implemented");
+		//TODO
+		return 0;
 	}
 
 	/**
@@ -33,7 +145,7 @@ public class MinimalSpanningTreeTour extends Tour {
 	 * <code>getWorld().getPoints()</code> is empty.
 	 */
 	public Point getMSTRoot() {
-		throw new RuntimeException("not implemented");
+		return this.root;
 	}
 
 	/**
@@ -42,7 +154,7 @@ public class MinimalSpanningTreeTour extends Tour {
 	 * The result of this method is never null.
 	 */
 	public List<MSTEdge> getMST() {
-		throw new RuntimeException("not implemented");
+		return this.MST;
 	}
 
 	@Override
@@ -55,6 +167,8 @@ public class MinimalSpanningTreeTour extends Tour {
 	 * Return the empty list if world is empty.
 	 */
 	public List<Point> getVisitSequence() {
-		throw new RuntimeException("not implemented");
+		//TODO
+		ArrayList<Point> result = new ArrayList<Point>();
+		return result;
 	}
 }
