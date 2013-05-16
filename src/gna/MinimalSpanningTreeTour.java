@@ -28,7 +28,16 @@ public class MinimalSpanningTreeTour extends Tour {
 
 		@Override
 		public int compareTo(MSTEdge other) {
-			return Double.compare(this.getWeight(), other.getWeight());
+			int result = Double.compare(this.getWeight(), other.getWeight());
+			if(result == 0)
+				result = Double.compare(this.p1.getX(), other.p1.getX());
+			if(result == 0)
+				result = Double.compare(this.p1.getY(), other.p1.getY());
+			if(result == 0)
+				result = Double.compare(this.p2.getX(), other.p2.getX());
+			if(result == 0)
+				result = Double.compare(this.p2.getY(), other.p2.getY());
+			return result;
 		}
 
 		@Override
@@ -73,10 +82,6 @@ public class MinimalSpanningTreeTour extends Tour {
 			this.root = null;
 			return;
 		}
-
-		HashSet<Point> openPoints = new HashSet<Point>();
-		openPoints.addAll(world.getPoints());
-		this.root = world.getPoints().get(0);
 		
 		TreeSet<MSTEdge> openEdges = new TreeSet<MSTEdge>();
 		for(Point start: world.getPoints()){
@@ -87,6 +92,12 @@ public class MinimalSpanningTreeTour extends Tour {
 			}
 		}
 		
+		this.root = world.getPoints().get(0);
+
+		HashSet<Point> openPoints = new HashSet<Point>();
+		openPoints.addAll(world.getPoints());
+		openPoints.remove(this.getMSTRoot());
+		
 		HashSet<Point> closedPoints = new HashSet<Point>();
 		closedPoints.add(this.getMSTRoot());
 		
@@ -96,18 +107,12 @@ public class MinimalSpanningTreeTour extends Tour {
 			MSTEdge found = null;
 			while(edgeItr.hasNext()){
 				found = edgeItr.next();
-				if(!(closedPoints.contains(found.p1) || closedPoints.contains(found.p2))){
-					continue;
-				}else if(closedPoints.contains(found.p1) && closedPoints.contains(found.p2)){
-					continue;
-				}else{
+				if(closedPoints.contains(found.p1) && (!closedPoints.contains(found.p2))){
 					break;
 				}
 			}
 			this.getMST().add(found);
-			closedPoints.add(found.p1);
 			closedPoints.add(found.p2);
-			openPoints.remove(found.p1);
 			openPoints.remove(found.p2);
 			while(openEdges.remove(found)){
 				//NOP
@@ -145,8 +150,13 @@ public class MinimalSpanningTreeTour extends Tour {
 	 * Return the empty list if world is empty.
 	 */
 	public List<Point> getVisitSequence() {
-		//TODO
 		ArrayList<Point> result = new ArrayList<Point>();
+		
+		if(this.getWorld().getNbPoints() < 1)
+			return result;
+		
+		result.add(this.getMSTRoot());
+			
 		return result;
 	}
 }
