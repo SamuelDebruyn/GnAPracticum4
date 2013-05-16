@@ -1,7 +1,6 @@
 package gna;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -31,35 +30,6 @@ public abstract class IncrementallyConstructedTour extends Tour {
 	
 	protected void addToTour(Point p){
 		this.getVisitSequence().add(p);
-	}
-	
-	@Override
-	public double getTotalDistance() {
-
-		double totalDistance = 0;
-		
-		if(this.getWorld().getNbPoints() <= 1)
-			return totalDistance;
-
-		if (this.getVisitSequence().isEmpty())
-			return totalDistance;
-
-		Iterator<Point> itr = this.getVisitSequence().iterator();
-
-		Point previous = itr.next();
-
-		while (itr.hasNext()) {
-
-			Point current = itr.next();
-			totalDistance += previous.distanceTo(current);
-			previous = current;
-
-		}
-
-		if (this.getVisitSequence().size() > 1)
-			totalDistance += this.getVisitSequence().get(0).distanceTo(this.getVisitSequence().get(this.getVisitSequence().size() - 1));
-
-		return totalDistance;
 	}
 	
 	@Override

@@ -1,7 +1,6 @@
 package gna;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -63,25 +62,12 @@ public class MinimalSpanningTreeTour extends Tour {
 			return "[" + String.valueOf(this.p1) + " - " + String.valueOf(this.p2) +"] - " + String.valueOf(this.getWeight());
 		}
 	}
-	
-	public class MSTEdgeComparator implements Comparator<MSTEdge>{
-
-		@Override
-		public int compare(MSTEdge arg0, MSTEdge arg1) {
-			int result = Double.compare(arg0.getWeight(), arg1.getWeight());
-			return result;
-		}
-		
-	}
 
 	private final Point root;
 	private final ArrayList<MSTEdge> MST = new ArrayList<MSTEdge>();
 
 	public MinimalSpanningTreeTour(World world) {
 		super(world);
-		
-		//TODO: allerlei shizzle als er maar 1 punt wordt gegeven
-		//TODO: fout
 
 		if (this.getWorld().getNbPoints() < 1) {
 			this.root = null;
@@ -92,7 +78,7 @@ public class MinimalSpanningTreeTour extends Tour {
 		openPoints.addAll(world.getPoints());
 		this.root = world.getPoints().get(0);
 		
-		TreeSet<MSTEdge> openEdges = new TreeSet<MSTEdge>(new MSTEdgeComparator());
+		TreeSet<MSTEdge> openEdges = new TreeSet<MSTEdge>();
 		for(Point start: world.getPoints()){
 			for(Point end: world.getPoints()){
 				if(!start.equals(end)){
@@ -101,26 +87,8 @@ public class MinimalSpanningTreeTour extends Tour {
 			}
 		}
 		
-		Iterator<MSTEdge> itr = openEdges.iterator();
-		MSTEdge startEdge = null;
-		while(itr.hasNext()){
-			startEdge = itr.next();
-			if(startEdge.p1.equals(this.getMSTRoot())){				
-				break;
-			}else if(startEdge.p2.equals(this.getMSTRoot())){
-				break;
-			}
-		}
-		while(openEdges.remove(startEdge)){
-			//NOP			
-		}
-		this.getMST().add(startEdge);
-		
 		HashSet<Point> closedPoints = new HashSet<Point>();
-		closedPoints.add(startEdge.p1);
-		closedPoints.add(startEdge.p2);
-		openPoints.remove(startEdge.p1);
-		openPoints.remove(startEdge.p2);
+		closedPoints.add(this.getMSTRoot());
 		
 		while(!openPoints.isEmpty()){
 			
@@ -146,12 +114,6 @@ public class MinimalSpanningTreeTour extends Tour {
 			}
 		}
 		
-	}
-
-	@Override
-	public double getTotalDistance() {
-		//TODO
-		return 0;
 	}
 
 	/**

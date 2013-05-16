@@ -1,5 +1,6 @@
 package gna;
 
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -28,7 +29,33 @@ public abstract class Tour {
 	 * If <code>getWorld().getNbPoints()</code> is less than or equal to one,
 	 * then this method returns 0.
 	 */
-	public abstract double getTotalDistance();
+	public double getTotalDistance() {
+
+		double totalDistance = 0;
+		
+		if(this.getWorld().getNbPoints() <= 1)
+			return totalDistance;
+
+		if (this.getVisitSequence().isEmpty())
+			return totalDistance;
+
+		Iterator<Point> itr = this.getVisitSequence().iterator();
+
+		Point previous = itr.next();
+
+		while (itr.hasNext()) {
+
+			Point current = itr.next();
+			totalDistance += previous.distanceTo(current);
+			previous = current;
+
+		}
+
+		if (this.getVisitSequence().size() > 1)
+			totalDistance += this.getVisitSequence().get(0).distanceTo(this.getVisitSequence().get(this.getVisitSequence().size() - 1));
+
+		return totalDistance;
+	}
 
 	/**
 	 * Return the list of points in the order they should be visited.
