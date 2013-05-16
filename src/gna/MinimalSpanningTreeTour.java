@@ -1,6 +1,7 @@
 package gna;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -28,9 +29,7 @@ public class MinimalSpanningTreeTour extends Tour {
 
 		@Override
 		public int compareTo(MSTEdge other) {
-			Double first = Double.valueOf(this.getWeight());
-			Double second = Double.valueOf(other.getWeight());
-			return first.compareTo(second);
+			return Double.compare(this.getWeight(), other.getWeight());
 		}
 
 		@Override
@@ -58,6 +57,21 @@ public class MinimalSpanningTreeTour extends Tour {
 			
 			return false;
 		}
+
+		@Override
+		public String toString() {
+			return "[" + String.valueOf(this.p1) + " - " + String.valueOf(this.p2) +"] - " + String.valueOf(this.getWeight());
+		}
+	}
+	
+	public class MSTEdgeComparator implements Comparator<MSTEdge>{
+
+		@Override
+		public int compare(MSTEdge arg0, MSTEdge arg1) {
+			int result = Double.compare(arg0.getWeight(), arg1.getWeight());
+			return result;
+		}
+		
 	}
 
 	private final Point root;
@@ -78,7 +92,7 @@ public class MinimalSpanningTreeTour extends Tour {
 		openPoints.addAll(world.getPoints());
 		this.root = world.getPoints().get(0);
 		
-		PriorityQueue<MSTEdge> openEdges = new PriorityQueue<MSTEdge>();
+		PriorityQueue<MSTEdge> openEdges = new PriorityQueue<MSTEdge>(11, new MSTEdgeComparator());
 		for(Point start: world.getPoints()){
 			for(Point end: world.getPoints()){
 				if(!start.equals(end)){
@@ -119,15 +133,17 @@ public class MinimalSpanningTreeTour extends Tour {
 				}else if(closedPoints.contains(found.p1) && closedPoints.contains(found.p2)){
 					continue;
 				}else{
-					this.getMST().add(found);
-					closedPoints.add(found.p1);
-					closedPoints.add(found.p2);
-					openPoints.remove(found.p1);
-					openPoints.remove(found.p2);
 					break;
 				}
 			}
-						
+			this.getMST().add(found);
+			closedPoints.add(found.p1);
+			closedPoints.add(found.p2);
+			openPoints.remove(found.p1);
+			openPoints.remove(found.p2);
+			while(openEdges.remove(found)){
+				//NOP
+			}
 		}
 		
 	}
