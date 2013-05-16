@@ -5,7 +5,7 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.PriorityQueue;
+import java.util.TreeSet;
 
 /**
  * A tour constructed using the minimal spanning tree heuristic.
@@ -92,7 +92,7 @@ public class MinimalSpanningTreeTour extends Tour {
 		openPoints.addAll(world.getPoints());
 		this.root = world.getPoints().get(0);
 		
-		PriorityQueue<MSTEdge> openEdges = new PriorityQueue<MSTEdge>(11, new MSTEdgeComparator());
+		TreeSet<MSTEdge> openEdges = new TreeSet<MSTEdge>(new MSTEdgeComparator());
 		for(Point start: world.getPoints()){
 			for(Point end: world.getPoints()){
 				if(!start.equals(end)){
