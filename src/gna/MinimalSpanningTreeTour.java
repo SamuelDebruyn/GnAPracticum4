@@ -140,6 +140,22 @@ public class MinimalSpanningTreeTour extends Tour {
 		return this.MST;
 	}
 
+	private ArrayList<Point> constructSequence(Point insert, ArrayList<Point> previous){
+		
+		previous.add(insert);
+		
+		for(MSTEdge edge: this.getMST()){
+			
+			if(edge.p1.equals(insert) && (!previous.contains(edge.p2))){
+				previous = constructSequence(edge.p2, previous);
+			}
+			
+		}
+		
+		return previous;
+		
+	}
+	
 	@Override
 	/**
 	 * The visit sequence is a PRE-ORDER traversal of the MST
@@ -149,14 +165,10 @@ public class MinimalSpanningTreeTour extends Tour {
 	 * 
 	 * Return the empty list if world is empty.
 	 */
+
 	public List<Point> getVisitSequence() {
-		ArrayList<Point> result = new ArrayList<Point>();
 		
-		if(this.getWorld().getNbPoints() < 1)
-			return result;
+		return this.constructSequence(this.getMSTRoot(), new ArrayList<Point>());
 		
-		result.add(this.getMSTRoot());
-			
-		return result;
 	}
 }
