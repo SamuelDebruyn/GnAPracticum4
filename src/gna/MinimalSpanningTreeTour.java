@@ -1,10 +1,7 @@
 package gna;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.TreeSet;
 
 /**
  * A tour constructed using the minimal spanning tree heuristic.
@@ -85,45 +82,39 @@ public class MinimalSpanningTreeTour extends Tour {
 			return;
 		}
 		
+		ArrayList<Point> openPoints = new ArrayList<Point>();
+		ArrayList<Point> closedPoints = new ArrayList<Point>();
 		
-		/*
-		 * Oud algoritme: back-up
-		TreeSet<MSTEdge> openEdges = new TreeSet<MSTEdge>();
-		for(Point start: world.getPoints()){
-			for(Point end: world.getPoints()){
-				if(!start.equals(end)){
-					openEdges.add(new MSTEdge(start, end));
-				}
-			}
-		}
+		openPoints.addAll(this.getWorld().getPoints());
 		
-		this.root = world.getPoints().get(0);
-
-		HashSet<Point> openPoints = new HashSet<Point>();
-		openPoints.addAll(world.getPoints());
-		openPoints.remove(this.getMSTRoot());
-		
-		HashSet<Point> closedPoints = new HashSet<Point>();
+		this.root = openPoints.remove(0);
 		closedPoints.add(this.getMSTRoot());
 		
 		while(!openPoints.isEmpty()){
 			
-			Iterator<MSTEdge> edgeItr = openEdges.iterator();
-			MSTEdge found = null;
-			while(edgeItr.hasNext()){
-				found = edgeItr.next();
-				if(closedPoints.contains(found.p1) && (!closedPoints.contains(found.p2))){
-					break;
+			double weight = Double.MAX_VALUE;
+			MSTEdge edge = null;
+			
+			for(Point start: closedPoints){
+				
+				for(Point end: openPoints){
+					
+					double cWeight = start.distanceTo(end);
+					
+					if(cWeight < weight){
+						weight = cWeight;
+						edge = new MSTEdge(start, end);
+					}
+					
 				}
 			}
-			this.getMST().add(found);
-			closedPoints.add(found.p2);
-			openPoints.remove(found.p2);
-			while(openEdges.remove(found)){
-				//NOP
-			}
+			
+			openPoints.remove(edge.p2);
+			closedPoints.add(edge.p2);
+			this.getMST().add(edge);
+			
 		}
-		*/
+		
 		
 		this.MSTTour = this.constructSequence(this.getMSTRoot(), new ArrayList<Point>());
 		
