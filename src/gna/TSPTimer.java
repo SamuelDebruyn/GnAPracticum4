@@ -32,7 +32,7 @@ public class TSPTimer {
 		out = "Tour distance = " + tour1.getTotalDistance();
 		System.out.println(out.replace(".", ","));
 		elapsed = (stop - start) / 1000.0;
-		out = "Nearest insertion:  " + elapsed + " seconds";
+		out = "Nearest insertion (s):  " + elapsed;
 		System.out.println(out.replace(".", ","));
 
 		// run smallest insertion heuristic
@@ -42,7 +42,7 @@ public class TSPTimer {
 		out = "Tour distance = " + tour2.getTotalDistance();
 		System.out.println(out.replace(".", ","));
 		elapsed = (stop - start) / 1000.0;
-		out = "Smallest increase:  " + elapsed + " seconds";
+		out = "Smallest increase (s):  " + elapsed;
 		System.out.println(out.replace(".", ","));
 
 		// run MST insertion heuristic
@@ -52,7 +52,7 @@ public class TSPTimer {
 		out = "Tour distance = " + tour3.getTotalDistance();
 		System.out.println(out.replace(".", ","));
 		elapsed = (stop - start) / 1000.0;
-		out = "MST insertion:  " + elapsed + " seconds";
+		out = "MST insertion (s):  " + elapsed;
 		System.out.println(out.replace(".", ","));
 	}
 }
