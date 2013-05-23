@@ -8,7 +8,7 @@ import java.util.List;
  */
 public class MinimalSpanningTreeTour extends Tour {
 
-	public class MSTEdge implements Comparable<MSTEdge> {
+	public class MSTEdge {
 
 		public final Point p1, p2;
 		private final double weight;
@@ -21,20 +21,6 @@ public class MinimalSpanningTreeTour extends Tour {
 
 		public double getWeight() {
 			return weight;
-		}
-
-		@Override
-		public int compareTo(MSTEdge other) {
-			int result = Double.compare(this.getWeight(), other.getWeight());
-			if(result == 0)
-				result = Double.compare(this.p1.getX(), other.p1.getX());
-			if(result == 0)
-				result = Double.compare(this.p1.getY(), other.p1.getY());
-			if(result == 0)
-				result = Double.compare(this.p2.getX(), other.p2.getX());
-			if(result == 0)
-				result = Double.compare(this.p2.getY(), other.p2.getY());
-			return result;
 		}
 
 		@Override
