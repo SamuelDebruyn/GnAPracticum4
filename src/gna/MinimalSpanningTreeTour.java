@@ -85,6 +85,9 @@ public class MinimalSpanningTreeTour extends Tour {
 			return;
 		}
 		
+		
+		/*
+		 * Oud algoritme: back-up
 		TreeSet<MSTEdge> openEdges = new TreeSet<MSTEdge>();
 		for(Point start: world.getPoints()){
 			for(Point end: world.getPoints()){
@@ -120,6 +123,7 @@ public class MinimalSpanningTreeTour extends Tour {
 				//NOP
 			}
 		}
+		*/
 		
 		this.MSTTour = this.constructSequence(this.getMSTRoot(), new ArrayList<Point>());
 		
