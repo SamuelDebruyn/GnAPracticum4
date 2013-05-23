@@ -71,14 +71,13 @@ public class MinimalSpanningTreeTour extends Tour {
 
 	private final Point root;
 	private final ArrayList<MSTEdge> MST = new ArrayList<MSTEdge>();
-	private final ArrayList<Point> MSTTour;
+	private ArrayList<Point> MSTTour = null;
 
 	public MinimalSpanningTreeTour(World world) {
 		super(world);
 
 		if (this.getWorld().getNbPoints() < 1) {
 			this.root = null;
-			this.MSTTour = new ArrayList<Point>();
 			return;
 		}
 		
@@ -114,9 +113,6 @@ public class MinimalSpanningTreeTour extends Tour {
 			this.getMST().add(edge);
 			
 		}
-		
-		
-		this.MSTTour = this.constructSequence(this.getMSTRoot(), new ArrayList<Point>());
 		
 	}
 
@@ -155,6 +151,10 @@ public class MinimalSpanningTreeTour extends Tour {
 		
 	}
 	
+	private void setMSTTour(ArrayList<Point> MSTTour) {
+		this.MSTTour = MSTTour;
+	}
+
 	@Override
 	/**
 	 * The visit sequence is a PRE-ORDER traversal of the MST
@@ -166,6 +166,9 @@ public class MinimalSpanningTreeTour extends Tour {
 	 */
 
 	public List<Point> getVisitSequence() {
+		
+		if(this.MSTTour == null)
+			this.setMSTTour(this.constructSequence(this.getMSTRoot(), new ArrayList<Point>()));
 		
 		return this.MSTTour;
 		
